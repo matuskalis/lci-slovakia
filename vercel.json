@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/sync-google-drive",
+      "schedule": "0 0 * * 0"
+    }
+  ],
+  "functions": {
+    "app/api/cron/sync-google-drive/route.ts": {
+      "maxDuration": 300
+    }
+  }
+}
