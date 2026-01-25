@@ -43,6 +43,12 @@ export function Header() {
     const checkAdminStatus = async () => {
       setLoadingAuth(true)
       const supabase = createClient()
+      if (!supabase) {
+        setIsAdmin(false)
+        setLoadingAuth(false)
+        return
+      }
+
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -63,6 +69,10 @@ export function Header() {
     checkAdminStatus()
 
     const supabaseAuthListener = createClient()
+    if (!supabaseAuthListener) {
+      return
+    }
+
     const { data: authListener } = supabaseAuthListener.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         checkAdminStatus()
