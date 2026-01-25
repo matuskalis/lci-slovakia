@@ -21,6 +21,16 @@ interface BearSighting {
   pozorovanie: number
 }
 
+interface BearActivity {
+  latitude: number
+  longitude: number
+  date: string
+  description: string
+  url: string | null
+  utok: boolean
+  year: number
+}
+
 interface HlaseniePoint {
   latitude: number
   longitude: number
@@ -55,6 +65,7 @@ interface FilterState {
   pozorovanie: boolean
   stret: boolean
   hlasenia_ludi: boolean
+  aktuality: boolean
 }
 
 export function LeafletMap() {
@@ -63,11 +74,14 @@ export function LeafletMap() {
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
   const hlaseniaMarkersRef = useRef<any[]>([])
+  const aktualityMarkersRef = useRef<any[]>([])
 
   const [isLoading, setIsLoading] = useState(true)
   const [isMounted, setIsMounted] = useState(false)
   const [allSightings, setAllSightings] = useState<BearSighting[]>([])
   const [filteredSightings, setFilteredSightings] = useState<BearSighting[]>([])
+  const [bearActivities, setBearActivities] = useState<BearActivity[]>([])
+  const [filteredActivities, setFilteredActivities] = useState<BearActivity[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [showMobileControls, setShowMobileControls] = useState(false)
   const [filters, setFilters] = useState<FilterState>({
@@ -75,6 +89,7 @@ export function LeafletMap() {
     pozorovanie: true,
     stret: true,
     hlasenia_ludi: false,
+    aktuality: true,
   })
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString())
   const [availableYears, setAvailableYears] = useState<string[]>([])
@@ -179,19 +194,33 @@ export function LeafletMap() {
     return results
   }
 
-  // Fetch CSV data
+  // Fetch CSV data and bear activities
   useEffect(() => {
     if (!isMounted) return
 
     const fetchData = async () => {
       try {
-        const response = await fetch("/images/medvede-export.csv")
-        const csvText = await response.text()
+        // Fetch CSV data
+        const csvResponse = await fetch("/images/medvede-export.csv")
+        const csvText = await csvResponse.text()
         const sightings = parseCSV(csvText)
         setAllSightings(sightings)
         setFilteredSightings(sightings)
+
+        // Fetch bear activities from sprejnamedveda.sk
+        const activitiesResponse = await fetch("/data/bear-activities.json")
+        const activities: BearActivity[] = await activitiesResponse.json()
+        setBearActivities(activities)
+        setFilteredActivities(activities)
+
+        // Add years from activities to available years
+        const activityYears = [...new Set(activities.map(a => a.year.toString()))]
+        setAvailableYears(prev => {
+          const combined = [...new Set([...prev, ...activityYears])]
+          return combined.sort((a, b) => Number.parseInt(b) - Number.parseInt(a))
+        })
       } catch (error) {
-        console.error("Error fetching CSV data:", error)
+        console.error("Error fetching data:", error)
       }
     }
 
@@ -660,7 +689,139 @@ export function LeafletMap() {
       return false
     })
     setFilteredSightings(filtered)
-  }, [allSightings, filters, selectedYear])
+
+    // Filter bear activities by year
+    const filteredActs = bearActivities.filter((activity) => {
+      return activity.year.toString() === selectedYear
+    })
+    setFilteredActivities(filteredActs)
+  }, [allSightings, bearActivities, filters, selectedYear])
+
+  // Update aktuality markers
+  useEffect(() => {
+    if (!mapInstanceRef.current || isLoading || !isMounted || typeof window === "undefined" || !(window as any).L)
+      return
+
+    const L = (window as any).L
+
+    // Clear existing aktuality markers
+    aktualityMarkersRef.current.forEach((marker) => {
+      mapInstanceRef.current.removeLayer(marker)
+    })
+    aktualityMarkersRef.current = []
+
+    // Only add markers if filter is enabled
+    if (!filters.aktuality) return
+
+    const currentZoom = mapInstanceRef.current.getZoom()
+    const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1024
+
+    const updateAktualityMarkers = () => {
+      // Clear existing
+      aktualityMarkersRef.current.forEach((marker) => {
+        mapInstanceRef.current.removeLayer(marker)
+      })
+      aktualityMarkersRef.current = []
+
+      if (!filters.aktuality) return
+
+      const zoom = mapInstanceRef.current.getZoom()
+
+      filteredActivities.forEach((activity) => {
+        // Purple color for aktuality, red border if it's an attack
+        const color = activity.utok ? "#dc2626" : "#8b5cf6" // Red for attacks, purple for observations
+        const borderColor = activity.utok ? "#991b1b" : "#7c3aed"
+
+        let marker
+
+        if (zoom < 11) {
+          const pinIcon = L.divIcon({
+            className: "custom-pin-marker aktuality",
+            html: `<div style="
+              position: relative;
+              width: 16px;
+              height: 22px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+            ">
+              <div style="
+                width: 12px;
+                height: 12px;
+                background-color: ${color};
+                border: 2px solid ${borderColor};
+                border-radius: 50% 50% 50% 0;
+                transform: rotate(-45deg);
+                position: absolute;
+                top: 1px;
+                left: 2px;
+              "></div>
+              <div style="
+                width: 5px;
+                height: 5px;
+                background-color: white;
+                border-radius: 50%;
+                position: absolute;
+                top: 5px;
+                left: 5.5px;
+                z-index: 1;
+              "></div>
+            </div>`,
+            iconSize: [16, 22],
+            iconAnchor: [8, 22],
+          })
+
+          marker = L.marker([activity.latitude, activity.longitude], {
+            icon: pinIcon,
+          })
+        } else {
+          marker = L.circle([activity.latitude, activity.longitude], {
+            color: borderColor,
+            fillColor: color,
+            fillOpacity: 0.8,
+            weight: 3,
+            radius: screenWidth < 768 ? 400 : 300,
+          })
+        }
+
+        // Format date
+        const formattedDate = activity.date
+
+        // Create popup content with link if available
+        const linkHtml = activity.url
+          ? `<p><a href="${activity.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline text-sm">${language === "sk" ? "Čítať viac" : "Read more"} →</a></p>`
+          : ""
+
+        marker.bindPopup(`
+          <div class="p-2 max-w-xs">
+            <h3 class="font-semibold text-base mb-1">${language === "sk" ? "Medvedia aktualita" : "Bear Activity"}</h3>
+            <p class="text-sm mb-2">${activity.description}</p>
+            <p class="text-xs text-gray-600"><strong>${language === "sk" ? "Dátum" : "Date"}:</strong> ${formattedDate}</p>
+            <p class="text-xs text-gray-600 mb-2"><strong>${language === "sk" ? "Typ" : "Type"}:</strong> ${activity.utok ? (language === "sk" ? "Útok" : "Attack") : (language === "sk" ? "Pozorovanie" : "Observation")}</p>
+            ${linkHtml}
+          </div>
+        `)
+
+        marker.addTo(mapInstanceRef.current)
+        aktualityMarkersRef.current.push(marker)
+      })
+    }
+
+    updateAktualityMarkers()
+
+    // Update on zoom
+    const handleZoomEnd = () => {
+      updateAktualityMarkers()
+    }
+
+    mapInstanceRef.current.on("zoomend", handleZoomEnd)
+
+    return () => {
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.off("zoomend", handleZoomEnd)
+      }
+    }
+  }, [filters.aktuality, filteredActivities, isLoading, language, isMounted])
 
   // Handle filter changes
   const handleFilterChange = (filterType: keyof FilterState, checked: boolean) => {
@@ -851,6 +1012,20 @@ export function LeafletMap() {
                   </label>
                 </div>
               </div>
+
+              <div className="flex items-center space-x-2 lg:space-x-3">
+                <Checkbox
+                  id="aktuality"
+                  checked={filters.aktuality}
+                  onCheckedChange={(checked) => handleFilterChange("aktuality", checked as boolean)}
+                />
+                <div className="flex items-center gap-2">
+                  <div className="w-3 h-3 lg:w-4 lg:h-4 rounded-full bg-purple-500"></div>
+                  <label htmlFor="aktuality" className="text-xs lg:text-sm font-medium">
+                    {language === "sk" ? "Aktuality (sprejnamedveda.sk)" : "News (sprejnamedveda.sk)"}
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -867,15 +1042,25 @@ export function LeafletMap() {
                   {language === "sk" ? "Zobrazené:" : "Displayed:"}
                 </span>
                 <span className="font-semibold text-xs lg:text-sm">
-                  {filteredSightings.length + (filters.hlasenia_ludi ? HLASENIA_LUDI_POINTS.length : 0)}
+                  {filteredSightings.length + (filters.hlasenia_ludi ? HLASENIA_LUDI_POINTS.length : 0) + (filters.aktuality ? filteredActivities.length : 0)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-xs lg:text-sm text-gray-600">{language === "sk" ? "Celkom:" : "Total:"}</span>
                 <span className="font-semibold text-xs lg:text-sm">
-                  {allSightings.length + HLASENIA_LUDI_POINTS.length}
+                  {allSightings.length + HLASENIA_LUDI_POINTS.length + bearActivities.length}
                 </span>
               </div>
+              {filters.aktuality && filteredActivities.length > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-xs lg:text-sm text-gray-600">
+                    {language === "sk" ? "Aktuality:" : "News:"}
+                  </span>
+                  <span className="font-semibold text-xs lg:text-sm text-purple-600">
+                    {filteredActivities.length}
+                  </span>
+                </div>
+              )}
               <div className="pt-1 lg:pt-2 border-t">
                 <div className="text-xs text-gray-500">
                   {language === "sk"
