@@ -59,6 +59,12 @@ export default function HomePage() {
     async function getLatestBlogPosts() {
       try {
         const supabase = createClient()
+        if (!supabase) {
+          setBlogPosts([])
+          setBlogLoading(false)
+          return
+        }
+
         const { data, error } = await supabase
           .from("blogs")
           .select("id, slug, title, content, category, created_at, published")
