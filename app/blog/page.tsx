@@ -1,5 +1,6 @@
 "use client"
 
+import DOMPurify from "dompurify"
 import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -42,7 +43,7 @@ function BlogPostCard({ post }: { post: BlogPost }) {
         {post.content && (
           <div
             className="text-gray-600 mb-4 line-clamp-3"
-            dangerouslySetInnerHTML={{ __html: post.content.substring(0, 150) + "..." }}
+            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content.substring(0, 150) + "...") }}
           />
         )}
         <Link href={`/blog/${post.slug}`}>

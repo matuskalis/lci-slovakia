@@ -108,7 +108,7 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/20 py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-white/60 text-xs">© 2024 LCI-SK.eu. {t("footer.rights")}</p>
+          <p className="text-white/60 text-xs">© {new Date().getFullYear()} LCI-SK.eu. {t("footer.rights")}</p>
           <p className="text-white/60 text-xs mt-1 sm:mt-0">
             Made by{" "}
             <a href="https://nimvya.com" className="text-white hover:underline">

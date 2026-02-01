@@ -12,16 +12,30 @@ export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    const adminAuth = localStorage.getItem("admin_authenticated")
-    if (adminAuth !== "true") {
-      router.push("/admin/login")
-    } else {
-      setIsAuthenticated(true)
+    const verifySession = async () => {
+      try {
+        const response = await fetch("/api/admin/verify")
+        const data = await response.json()
+
+        if (data.authorized) {
+          setIsAuthenticated(true)
+        } else {
+          router.push("/admin/login")
+        }
+      } catch {
+        router.push("/admin/login")
+      }
     }
+
+    verifySession()
   }, [router])
 
-  const handleLogout = () => {
-    localStorage.removeItem("admin_authenticated")
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/admin/logout", { method: "POST" })
+    } catch {
+      // Continue with redirect even if logout fails
+    }
     router.push("/admin/login")
   }
 

@@ -1,5 +1,6 @@
 "use client"
 
+import DOMPurify from "dompurify"
 import { createClient } from "@/lib/supabase/client"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -99,7 +100,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <CardContent className="p-8 md:p-12">
             <div
               className="prose prose-lg max-w-none prose-headings:text-[#5f523b] prose-links:text-[#5f523b] prose-strong:text-[#5f523b]"
-              dangerouslySetInnerHTML={{ __html: post.content || "" }}
+              dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.content || "") }}
             />
           </CardContent>
         </Card>

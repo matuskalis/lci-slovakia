@@ -16,16 +16,27 @@ export default function AdminLogin() {
     setLoading(true)
     setError("")
 
-    // Check if password matches
-    if (password === "LciSk2025") {
-      // Store admin session in localStorage
-      localStorage.setItem("admin_authenticated", "true")
-      router.push("/admin/dashboard")
-    } else {
-      setError("Nesprávne heslo")
-    }
+    try {
+      const formData = new FormData()
+      formData.append("password", password)
 
-    setLoading(false)
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        router.push("/admin/dashboard")
+      } else {
+        setError(data.message || "Nesprávne heslo")
+      }
+    } catch {
+      setError("Nastala chyba pri prihlasovaní")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
