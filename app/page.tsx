@@ -99,7 +99,12 @@ export default function HomePage() {
     <div className="animate-fade-in">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
+        <motion.div
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0 z-0"
+        >
           <Image
             src="/images/5md.jpeg"
             alt="Brown bear in Slovak mountains"
@@ -109,21 +114,31 @@ export default function HomePage() {
             unoptimized
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60" />
-        </div>
+        </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          className="relative z-10 text-center text-white max-w-5xl mx-auto px-4"
-        >
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 text-balance leading-tight">
+        <div className="relative z-10 text-center text-white max-w-5xl mx-auto px-4">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="text-5xl md:text-7xl lg:text-8xl font-serif font-bold mb-8 text-balance leading-tight"
+          >
             {t("hero.title")}
-          </h1>
-          <p className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed">
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            className="text-xl md:text-2xl mb-12 text-white/90 max-w-3xl mx-auto leading-relaxed"
+          >
             {t("hero.subtitle")}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+            className="flex flex-col sm:flex-row gap-6 justify-center"
+          >
             <Link
               href="/selmy"
               className="bg-white text-forest px-8 py-4 rounded-xl font-medium hover:bg-white/90 transition-colors duration-300 inline-flex items-center text-lg"
@@ -139,8 +154,8 @@ export default function HomePage() {
             >
               {t("hero.cta2")}
             </Link>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </section>
 
       {/* Stats Section */}
@@ -291,13 +306,13 @@ export default function HomePage() {
                 className="h-full"
               >
                 <Link href={`/selmy/${species.slug}`} className="block group h-full" onClick={scrollToTop}>
-                  <div className="card h-full overflow-hidden flex flex-col">
+                  <div className="bg-white rounded-2xl p-6 shadow-md h-full overflow-hidden flex flex-col transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl">
                     <div className="relative h-64 mb-6 overflow-hidden rounded-xl flex-shrink-0">
                       <Image
                         src={species.image || "/placeholder.svg"}
                         alt={species.name}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
                         unoptimized
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
