@@ -31,40 +31,10 @@ interface BearActivity {
   year: number
 }
 
-interface HlaseniePoint {
-  latitude: number
-  longitude: number
-}
-
-const HLASENIA_LUDI_POINTS: HlaseniePoint[] = [
-  { latitude: 49.344227, longitude: 18.500609 },
-  { latitude: 49.354962, longitude: 18.526015 },
-  { latitude: 49.442121, longitude: 18.668266 },
-  { latitude: 49.38427, longitude: 18.637086 },
-  { latitude: 49.403569, longitude: 18.703175 },
-  { latitude: 49.402229, longitude: 18.716907 },
-  { latitude: 49.397313, longitude: 18.742313 },
-  { latitude: 49.486607, longitude: 18.782825 },
-  { latitude: 49.495527, longitude: 18.898869 },
-  { latitude: 49.387928, longitude: 18.833637 },
-  { latitude: 49.345896, longitude: 18.780079 },
-  { latitude: 49.339998, longitude: 18.856655 },
-  { latitude: 49.331345, longitude: 18.874555 },
-  { latitude: 49.327205, longitude: 18.832405 },
-  { latitude: 49.361438, longitude: 18.910931 },
-  { latitude: 49.289183, longitude: 18.757343 },
-  { latitude: 49.276754, longitude: 18.745795 },
-  { latitude: 49.279014, longitude: 18.783903 },
-  { latitude: 49.264321, longitude: 18.772355 },
-  { latitude: 49.256408, longitude: 18.744063 },
-  { latitude: 49.236431, longitude: 18.756188 },
-]
-
 interface FilterState {
   pobytove_znaky: boolean
   pozorovanie: boolean
   stret: boolean
-  hlasenia_ludi: boolean
   aktuality: boolean
 }
 
@@ -73,7 +43,6 @@ export function LeafletMap() {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<any>(null)
   const markersRef = useRef<any[]>([])
-  const hlaseniaMarkersRef = useRef<any[]>([])
   const aktualityMarkersRef = useRef<any[]>([])
 
   const [isLoading, setIsLoading] = useState(true)
@@ -88,7 +57,6 @@ export function LeafletMap() {
     pobytove_znaky: true,
     pozorovanie: true,
     stret: true,
-    hlasenia_ludi: false,
     aktuality: true,
   })
   const [selectedYear, setSelectedYear] = useState<string>("2025")
@@ -563,249 +531,6 @@ export function LeafletMap() {
     }
   }, [filteredSightings, isLoading, language, isMounted])
 
-  useEffect(() => {
-    if (!mapInstanceRef.current || isLoading || !isMounted || typeof window === "undefined" || !(window as any).L)
-      return
-
-    const L = (window as any).L
-
-    // Clear existing hlasenia markers
-    hlaseniaMarkersRef.current.forEach((marker) => {
-      mapInstanceRef.current.removeLayer(marker)
-    })
-    hlaseniaMarkersRef.current = []
-
-    // Only add markers if filter is enabled
-    if (!filters.hlasenia_ludi) return
-
-    const currentZoom = mapInstanceRef.current.getZoom()
-    const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1024
-    const color = "#ffffff" // White color for hlasenia ludi
-
-    HLASENIA_LUDI_POINTS.forEach((point) => {
-      let marker
-
-      if (currentZoom < 11) {
-        const pinIcon = L.divIcon({
-          className: "custom-pin-marker",
-          html: `<div style="
-            position: relative;
-            width: 16px;
-            height: 22px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-          ">
-            <div style="
-              width: 12px;
-              height: 12px;
-              background-color: ${color};
-              border: 2px solid #374151;
-              border-radius: 50% 50% 50% 0;
-              transform: rotate(-45deg);
-              position: absolute;
-              top: 1px;
-              left: 2px;
-            "></div>
-            <div style="
-              width: 5px;
-              height: 5px;
-              background-color: ${color};
-              border: 1px solid #374151;
-              border-radius: 50%;
-              position: absolute;
-              top: 5px;
-              left: 5.5px;
-              z-index: 1;
-            "></div>
-          </div>`,
-          iconSize: [16, 22],
-          iconAnchor: [8, 22],
-        })
-
-        marker = L.marker([point.latitude, point.longitude], {
-          icon: pinIcon,
-        })
-      } else {
-        marker = L.circle([point.latitude, point.longitude], {
-          color: "#374151",
-          fillColor: color,
-          fillOpacity: 0.9,
-          weight: 2,
-          radius: screenWidth < 768 ? 400 : 300,
-        })
-      }
-
-      marker.bindPopup(`
-        <div style="
-          font-family: system-ui, -apple-system, sans-serif;
-          min-width: 200px;
-          padding: 4px;
-        ">
-          <div style="
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-          ">
-            <div style="
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              background-color: #ffffff;
-              border: 2px solid #374151;
-            "></div>
-            <span style="
-              font-size: 12px;
-              font-weight: 600;
-              color: #374151;
-              text-transform: uppercase;
-              letter-spacing: 0.5px;
-            ">${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</span>
-          </div>
-          <h3 style="
-            font-size: 16px;
-            font-weight: 700;
-            margin: 0 0 8px 0;
-            color: #1f2937;
-          ">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
-          <p style="
-            font-size: 14px;
-            color: #6b7280;
-            margin: 0;
-          ">
-            ${language === "sk" ? "Nahlásený výskyt medveďa" : "Reported bear sighting"}
-          </p>
-        </div>
-      `)
-
-      marker.addTo(mapInstanceRef.current)
-      hlaseniaMarkersRef.current.push(marker)
-    })
-
-    // Update on zoom
-    const handleZoomEnd = () => {
-      // Clear and re-add markers
-      hlaseniaMarkersRef.current.forEach((marker) => {
-        mapInstanceRef.current.removeLayer(marker)
-      })
-      hlaseniaMarkersRef.current = []
-
-      if (!filters.hlasenia_ludi) return
-
-      const newZoom = mapInstanceRef.current.getZoom()
-
-      HLASENIA_LUDI_POINTS.forEach((point) => {
-        let marker
-
-        if (newZoom < 11) {
-          const pinIcon = L.divIcon({
-            className: "custom-pin-marker",
-            html: `<div style="
-              position: relative;
-              width: 16px;
-              height: 22px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            ">
-              <div style="
-                width: 12px;
-                height: 12px;
-                background-color: ${color};
-                border: 2px solid #374151;
-                border-radius: 50% 50% 50% 0;
-                transform: rotate(-45deg);
-                position: absolute;
-                top: 1px;
-                left: 2px;
-              "></div>
-              <div style="
-                width: 5px;
-                height: 5px;
-                background-color: ${color};
-                border: 1px solid #374151;
-                border-radius: 50%;
-                position: absolute;
-                top: 5px;
-                left: 5.5px;
-                z-index: 1;
-              "></div>
-            </div>`,
-            iconSize: [16, 22],
-            iconAnchor: [8, 22],
-          })
-
-          marker = L.marker([point.latitude, point.longitude], {
-            icon: pinIcon,
-          })
-        } else {
-          marker = L.circle([point.latitude, point.longitude], {
-            color: "#374151",
-            fillColor: color,
-            fillOpacity: 0.9,
-            weight: 2,
-            radius: screenWidth < 768 ? 400 : 300,
-          })
-        }
-
-        marker.bindPopup(`
-          <div style="
-            font-family: system-ui, -apple-system, sans-serif;
-            min-width: 200px;
-            padding: 4px;
-          ">
-            <div style="
-              display: flex;
-              align-items: center;
-              gap: 8px;
-              margin-bottom: 8px;
-            ">
-              <div style="
-                width: 12px;
-                height: 12px;
-                border-radius: 50%;
-                background-color: #ffffff;
-                border: 2px solid #374151;
-              "></div>
-              <span style="
-                font-size: 12px;
-                font-weight: 600;
-                color: #374151;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-              ">${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</span>
-            </div>
-            <h3 style="
-              font-size: 16px;
-              font-weight: 700;
-              margin: 0 0 8px 0;
-              color: #1f2937;
-            ">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
-            <p style="
-              font-size: 14px;
-              color: #6b7280;
-              margin: 0;
-            ">
-              ${language === "sk" ? "Nahlásený výskyt medveďa" : "Reported bear sighting"}
-            </p>
-          </div>
-        `)
-
-        marker.addTo(mapInstanceRef.current)
-        hlaseniaMarkersRef.current.push(marker)
-      })
-    }
-
-    mapInstanceRef.current.on("zoomend", handleZoomEnd)
-
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.off("zoomend", handleZoomEnd)
-      }
-    }
-  }, [filters.hlasenia_ludi, isLoading, language, isMounted])
-
   // Filter sightings based on active filters
   useEffect(() => {
     const filtered = allSightings.filter((sighting) => {
@@ -972,7 +697,7 @@ export function LeafletMap() {
               font-weight: 700;
               margin: 0 0 8px 0;
               color: #1f2937;
-            ">${language === "sk" ? "Medvedia aktualita" : "Bear Activity"}</h3>
+            ">${language === "sk" ? "Aktualita" : "News"}</h3>
             <p style="
               font-size: 14px;
               color: #4b5563;
@@ -1189,20 +914,6 @@ export function LeafletMap() {
 
               <div className="flex items-center space-x-2 lg:space-x-3">
                 <Checkbox
-                  id="hlasenia_ludi"
-                  checked={filters.hlasenia_ludi}
-                  onCheckedChange={(checked) => handleFilterChange("hlasenia_ludi", checked as boolean)}
-                />
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 lg:w-4 lg:h-4 rounded-full bg-white border-2 border-gray-700"></div>
-                  <label htmlFor="hlasenia_ludi" className="text-xs lg:text-sm font-medium">
-                    {language === "sk" ? "Hlásenia ľudí" : "People Reports"}
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2 lg:space-x-3">
-                <Checkbox
                   id="aktuality"
                   checked={filters.aktuality}
                   onCheckedChange={(checked) => handleFilterChange("aktuality", checked as boolean)}
@@ -1230,13 +941,13 @@ export function LeafletMap() {
                   {language === "sk" ? "Zobrazené:" : "Displayed:"}
                 </span>
                 <span className="font-semibold text-xs lg:text-sm">
-                  {filteredSightings.length + (filters.hlasenia_ludi ? HLASENIA_LUDI_POINTS.length : 0) + (filters.aktuality ? filteredActivities.length : 0)}
+                  {filteredSightings.length + (filters.aktuality ? filteredActivities.length : 0)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-xs lg:text-sm text-gray-600">{language === "sk" ? "Celkom:" : "Total:"}</span>
                 <span className="font-semibold text-xs lg:text-sm">
-                  {allSightings.length + HLASENIA_LUDI_POINTS.length + bearActivities.length}
+                  {allSightings.length + bearActivities.length}
                 </span>
               </div>
               {filters.aktuality && filteredActivities.length > 0 && (

@@ -5,7 +5,6 @@ import Link from "next/link"
 import Image from "next/image"
 import { Menu, X, Globe, ChevronDown } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { createClient } from "@/lib/supabase/client"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { usePathname } from "next/navigation"
 
@@ -14,8 +13,6 @@ export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isSpeciesOpen, setIsSpeciesOpen] = useState(false)
   const [isMobileSpeciesOpen, setIsMobileSpeciesOpen] = useState(false)
-  const [isAdmin, setIsAdmin] = useState(false)
-  const [loadingAuth, setLoadingAuth] = useState(true)
 
   const { language, setLanguage, t } = useLanguage()
   const pathname = usePathname()
@@ -36,54 +33,6 @@ export function Header() {
 
     return () => {
       window.removeEventListener("scroll", handleScroll)
-    }
-  }, [])
-
-  useEffect(() => {
-    const checkAdminStatus = async () => {
-      setLoadingAuth(true)
-      const supabase = createClient()
-      if (!supabase) {
-        setIsAdmin(false)
-        setLoadingAuth(false)
-        return
-      }
-
-      const {
-        data: { user },
-      } = await supabase.auth.getUser()
-
-      if (user) {
-        const { data: profile, error } = await supabase.from("profiles").select("role").eq("id", user.id).single()
-
-        if (error) {
-          console.error("Error fetching profile for header:", error)
-        }
-        setIsAdmin(profile?.role === "admin")
-      } else {
-        setIsAdmin(false)
-      }
-      setLoadingAuth(false)
-    }
-
-    checkAdminStatus()
-
-    const supabaseAuthListener = createClient()
-    if (!supabaseAuthListener) {
-      return
-    }
-
-    const { data: authListener } = supabaseAuthListener.auth.onAuthStateChange((_event, session) => {
-      if (session?.user) {
-        checkAdminStatus()
-      } else {
-        setIsAdmin(false)
-        setLoadingAuth(false)
-      }
-    })
-
-    return () => {
-      authListener.subscription.unsubscribe()
     }
   }, [])
 
@@ -215,24 +164,6 @@ export function Header() {
             <Link href="/spoluprace" className="nav-link text-white hover:text-white/80" onClick={scrollToTop}>
               {t("nav.cooperation")}
             </Link>
-            {!loadingAuth && isAdmin && (
-              <>
-                <Link
-                  href="/prihlasenie"
-                  className="px-4 py-2 rounded-xl font-medium transition-colors duration-300 border border-white text-white hover:bg-white hover:text-[#5f523b]"
-                  onClick={scrollToTop}
-                >
-                  {t("nav.login")}
-                </Link>
-                <Link
-                  href="/registracia"
-                  className="px-4 py-2 rounded-xl font-medium transition-colors duration-300 bg-white text-[#5f523b] hover:bg-white/90"
-                  onClick={scrollToTop}
-                >
-                  {t("nav.register")}
-                </Link>
-              </>
-            )}
           </nav>
 
           {/* Language Toggle & Mobile Menu */}
@@ -393,30 +324,6 @@ export function Header() {
               >
                 {t("nav.cooperation")}
               </Link>
-              {!loadingAuth && isAdmin && (
-                <>
-                  <Link
-                    href="/prihlasenie"
-                    className="block text-white hover:text-white/80 transition-colors duration-300 py-2"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false)
-                      scrollToTop()
-                    }}
-                  >
-                    {t("nav.login")}
-                  </Link>
-                  <Link
-                    href="/registracia"
-                    className="block text-white hover:text-white/80 transition-colors duration-300 py-2"
-                    onClick={() => {
-                      setIsMobileMenuOpen(false)
-                      scrollToTop()
-                    }}
-                  >
-                    {t("nav.register")}
-                  </Link>
-                </>
-              )}
             </div>
           </motion.div>
         )}
