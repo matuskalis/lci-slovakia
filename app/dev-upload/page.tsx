@@ -2,7 +2,8 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import { motion } from "framer-motion"
 import {
   Upload,
@@ -21,9 +22,34 @@ import {
 import { addObservation } from "./action"
 
 export default function DevUploadPage() {
+  const router = useRouter()
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ success: boolean; text: string } | null>(null)
+
+  useEffect(() => {
+    const verifySession = async () => {
+      try {
+        const response = await fetch("/api/admin/verify")
+        const data = await response.json()
+
+        if (data.authorized) {
+          setIsAuthenticated(true)
+        } else {
+          router.push("/admin/login")
+        }
+      } catch {
+        router.push("/admin/login")
+      }
+    }
+
+    verifySession()
+  }, [router])
+
+  if (!isAuthenticated) {
+    return null
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
@@ -77,7 +103,7 @@ export default function DevUploadPage() {
           >
             <h1 className="text-4xl md:text-5xl font-display font-bold mb-6">🚧 Dev Upload</h1>
             <p className="text-xl max-w-2xl mx-auto">
-              Development-only upload page. No authentication required. All fields are optional.
+              Development upload page. Admin authentication required. All fields are optional.
             </p>
           </motion.div>
         </div>
