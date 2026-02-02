@@ -91,7 +91,7 @@ export function LeafletMap() {
     hlasenia_ludi: false,
     aktuality: true,
   })
-  const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString())
+  const [selectedYear, setSelectedYear] = useState<string>("2025")
   const [availableYears, setAvailableYears] = useState<string[]>([])
 
   // Check if component is mounted (client-side)

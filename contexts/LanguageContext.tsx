@@ -109,6 +109,7 @@ const translations = {
     "blog.post3.title": "Rysie zimovanie a jeho význam",
     "blog.post3.excerpt":
       "Zimné správanie rysa je fascinujúci proces, ktorý im umožňuje prežiť chladné mesiace v horskom prostredí...",
+    "blog.view.all": "Zobraziť všetky články",
     "blog.category.research": "Výskum",
     "blog.category.protection": "Ochrana",
     "blog.category.education": "Vzdelávanie",
@@ -413,6 +414,7 @@ const translations = {
     "blog.post3.title": "Lynx hibernation and its importance",
     "blog.post3.excerpt":
       "Winter behavior of lynx is a fascinating process that allows them to survive cold months in mountain environment...",
+    "blog.view.all": "View all articles",
     "blog.category.research": "Research",
     "blog.category.protection": "Protection",
     "blog.category.education": "Education",

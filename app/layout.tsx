@@ -24,13 +24,17 @@ export const metadata: Metadata = {
   title: "LCI-SK.eu - Ochrana veľkých šeliem na Slovensku",
   description: "Združenie pre ochranu a výskum veľkých šeliem na Slovensku - medveďa, vlka a rysa.",
   keywords: "medveď, vlk, rys, ochrana, Slovensko, wildlife, conservation",
+  icons: {
+    icon: "/images/lci-logo.jpg",
+    apple: "/images/lci-logo.jpg",
+  },
   openGraph: {
     title: "LCI-SK.eu - Ochrana veľkých šeliem",
     description: "Združenie pre ochranu a výskum veľkých šeliem na Slovensku",
     type: "website",
     locale: "sk_SK",
   },
-    generator: 'v0.app'
+  generator: "v0.app",
 }
 
 export default function RootLayout({
