@@ -241,6 +241,36 @@ export function LeafletMap() {
           link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
           document.head.appendChild(link)
 
+          // Add custom popup styles
+          const customStyles = document.createElement("style")
+          customStyles.textContent = `
+            .leaflet-popup-content-wrapper {
+              border-radius: 12px !important;
+              box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1) !important;
+              padding: 0 !important;
+              overflow: hidden;
+            }
+            .leaflet-popup-content {
+              margin: 12px 14px !important;
+              line-height: 1.5 !important;
+            }
+            .leaflet-popup-tip {
+              box-shadow: 0 3px 6px -2px rgba(0, 0, 0, 0.1) !important;
+            }
+            .leaflet-popup-close-button {
+              color: #6b7280 !important;
+              font-size: 20px !important;
+              padding: 8px 10px !important;
+              width: auto !important;
+              height: auto !important;
+            }
+            .leaflet-popup-close-button:hover {
+              color: #1f2937 !important;
+              background: transparent !important;
+            }
+          `
+          document.head.appendChild(customStyles)
+
           // Load JS
           const script = document.createElement("script")
           script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
@@ -457,21 +487,55 @@ export function LeafletMap() {
           formattedDate = sighting.date
         }
 
+        const translatedCategory = language === "sk"
+          ? categoryText
+          : categoryText === "Pozorovanie"
+            ? "Observation"
+            : categoryText === "Pobytové znaky"
+              ? "Presence Signs"
+              : categoryText === "Stret"
+                ? "Conflict"
+                : categoryText
+
         marker.bindPopup(`
-          <div class="p-2">
-            <h3 class="font-semibold text-lg mb-2">${sighting.species}</h3>
-            <p><strong>${language === "sk" ? "Dátum" : "Date"}:</strong> ${formattedDate}</p>
-            <p><strong>${language === "sk" ? "Kategória" : "Category"}:</strong> ${
-              language === "sk"
-                ? categoryText
-                : categoryText === "Pozorovanie"
-                  ? "Observation"
-                  : categoryText === "Pobytové znaky"
-                    ? "Presence Signs"
-                    : categoryText === "Stret"
-                      ? "Conflict"
-                      : categoryText
-            }</p>
+          <div style="
+            font-family: system-ui, -apple-system, sans-serif;
+            min-width: 200px;
+            padding: 4px;
+          ">
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+            ">
+              <div style="
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: ${color};
+              "></div>
+              <span style="
+                font-size: 12px;
+                font-weight: 600;
+                color: ${color};
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              ">${translatedCategory}</span>
+            </div>
+            <h3 style="
+              font-size: 16px;
+              font-weight: 700;
+              margin: 0 0 8px 0;
+              color: #1f2937;
+            ">${sighting.species}</h3>
+            <p style="
+              font-size: 14px;
+              color: #6b7280;
+              margin: 0;
+            ">
+              <strong>${language === "sk" ? "Datum" : "Date"}:</strong> ${formattedDate}
+            </p>
           </div>
         `)
 
@@ -573,9 +637,45 @@ export function LeafletMap() {
       }
 
       marker.bindPopup(`
-        <div class="p-2">
-          <h3 class="font-semibold text-lg mb-2">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
-          <p><strong>${language === "sk" ? "Kategória" : "Category"}:</strong> ${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</p>
+        <div style="
+          font-family: system-ui, -apple-system, sans-serif;
+          min-width: 200px;
+          padding: 4px;
+        ">
+          <div style="
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+          ">
+            <div style="
+              width: 12px;
+              height: 12px;
+              border-radius: 50%;
+              background-color: #ffffff;
+              border: 2px solid #374151;
+            "></div>
+            <span style="
+              font-size: 12px;
+              font-weight: 600;
+              color: #374151;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            ">${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</span>
+          </div>
+          <h3 style="
+            font-size: 16px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            color: #1f2937;
+          ">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
+          <p style="
+            font-size: 14px;
+            color: #6b7280;
+            margin: 0;
+          ">
+            ${language === "sk" ? "Nahlásený výskyt medveďa" : "Reported bear sighting"}
+          </p>
         </div>
       `)
 
@@ -650,9 +750,45 @@ export function LeafletMap() {
         }
 
         marker.bindPopup(`
-          <div class="p-2">
-            <h3 class="font-semibold text-lg mb-2">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
-            <p><strong>${language === "sk" ? "Kategória" : "Category"}:</strong> ${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</p>
+          <div style="
+            font-family: system-ui, -apple-system, sans-serif;
+            min-width: 200px;
+            padding: 4px;
+          ">
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+            ">
+              <div style="
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: #ffffff;
+                border: 2px solid #374151;
+              "></div>
+              <span style="
+                font-size: 12px;
+                font-weight: 600;
+                color: #374151;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              ">${language === "sk" ? "Hlásenia ľudí" : "People Reports"}</span>
+            </div>
+            <h3 style="
+              font-size: 16px;
+              font-weight: 700;
+              margin: 0 0 8px 0;
+              color: #1f2937;
+            ">${language === "sk" ? "Hlásenie od občana" : "Citizen Report"}</h3>
+            <p style="
+              font-size: 14px;
+              color: #6b7280;
+              margin: 0;
+            ">
+              ${language === "sk" ? "Nahlásený výskyt medveďa" : "Reported bear sighting"}
+            </p>
           </div>
         `)
 
@@ -789,15 +925,67 @@ export function LeafletMap() {
 
         // Create popup content with link if available
         const linkHtml = activity.url
-          ? `<p><a href="${activity.url}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline text-sm">${language === "sk" ? "Čítať viac" : "Read more"} →</a></p>`
+          ? `<a href="${activity.url}" target="_blank" rel="noopener noreferrer" style="
+              display: inline-block;
+              margin-top: 8px;
+              font-size: 13px;
+              color: #8b5cf6;
+              text-decoration: none;
+              font-weight: 500;
+            ">${language === "sk" ? "Citaj viac" : "Read more"} &rarr;</a>`
           : ""
 
+        const typeColor = activity.utok ? "#dc2626" : "#8b5cf6"
+        const typeText = activity.utok
+          ? (language === "sk" ? "Utok" : "Attack")
+          : (language === "sk" ? "Pozorovanie" : "Observation")
+
         marker.bindPopup(`
-          <div class="p-2 max-w-xs">
-            <h3 class="font-semibold text-base mb-1">${language === "sk" ? "Medvedia aktualita" : "Bear Activity"}</h3>
-            <p class="text-sm mb-2">${activity.description}</p>
-            <p class="text-xs text-gray-600"><strong>${language === "sk" ? "Dátum" : "Date"}:</strong> ${formattedDate}</p>
-            <p class="text-xs text-gray-600 mb-2"><strong>${language === "sk" ? "Typ" : "Type"}:</strong> ${activity.utok ? (language === "sk" ? "Útok" : "Attack") : (language === "sk" ? "Pozorovanie" : "Observation")}</p>
+          <div style="
+            font-family: system-ui, -apple-system, sans-serif;
+            min-width: 220px;
+            max-width: 280px;
+            padding: 4px;
+          ">
+            <div style="
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              margin-bottom: 8px;
+            ">
+              <div style="
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: ${typeColor};
+              "></div>
+              <span style="
+                font-size: 12px;
+                font-weight: 600;
+                color: ${typeColor};
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+              ">${typeText}</span>
+            </div>
+            <h3 style="
+              font-size: 16px;
+              font-weight: 700;
+              margin: 0 0 8px 0;
+              color: #1f2937;
+            ">${language === "sk" ? "Medvedia aktualita" : "Bear Activity"}</h3>
+            <p style="
+              font-size: 14px;
+              color: #4b5563;
+              margin: 0 0 8px 0;
+              line-height: 1.4;
+            ">${activity.description}</p>
+            <p style="
+              font-size: 13px;
+              color: #6b7280;
+              margin: 0;
+            ">
+              <strong>${language === "sk" ? "Datum" : "Date"}:</strong> ${formattedDate}
+            </p>
             ${linkHtml}
           </div>
         `)

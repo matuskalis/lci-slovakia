@@ -161,7 +161,18 @@ export default function HomePage() {
       {/* Stats Section */}
       <section className="section-padding bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 }
+              }
+            }}
+            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+          >
             {[
               { number: "3", label: t("stats.species"), icon: BarChart3 },
               { number: "5+", label: t("stats.research"), icon: Award },
@@ -169,20 +180,47 @@ export default function HomePage() {
             ].map((stat, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                variants={{
+                  hidden: { opacity: 0, y: 40, scale: 0.95 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.6, ease: "easeOut" }
+                  }
+                }}
                 className="text-center h-full flex flex-col items-center justify-center p-8"
               >
-                <div className="w-16 h-16 bg-forest/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <motion.div
+                  className="w-16 h-16 bg-forest/10 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  variants={{
+                    hidden: { scale: 0.8, rotate: -10 },
+                    visible: {
+                      scale: 1,
+                      rotate: 0,
+                      transition: { duration: 0.5, delay: 0.1 }
+                    }
+                  }}
+                >
                   <stat.icon className="w-8 h-8 text-forest" />
-                </div>
-                <div className="text-4xl font-bold text-forest mb-2">{stat.number}</div>
+                </motion.div>
+                <motion.div
+                  className="text-4xl font-bold text-forest mb-2"
+                  variants={{
+                    hidden: { opacity: 0, scale: 0.5 },
+                    visible: {
+                      opacity: 1,
+                      scale: 1,
+                      transition: { duration: 0.4, delay: 0.2, type: "spring", stiffness: 200 }
+                    }
+                  }}
+                >
+                  {stat.number}
+                </motion.div>
                 <div className="text-gray-600 font-medium">{stat.label}</div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -207,19 +245,33 @@ export default function HomePage() {
           <div className="absolute inset-0 bg-black/40" />
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          viewport={{ once: true }}
-          className="relative z-10 text-center text-white max-w-6xl mx-auto px-4 py-8 md:py-0"
-        >
-          <h2 className="text-3xl md:text-6xl font-serif font-bold mb-8 md:mb-12 text-shadow">{t("mission.title")}</h2>
-          <p className="text-lg md:text-xl leading-relaxed mb-12 md:mb-16 max-w-4xl mx-auto text-shadow">
+        <div className="relative z-10 text-center text-white max-w-6xl mx-auto px-4 py-8 md:py-0">
+          <motion.h2
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="text-3xl md:text-6xl font-serif font-bold mb-8 md:mb-12 text-shadow"
+          >
+            {t("mission.title")}
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, delay: 0.1, ease: "easeOut" }}
+            className="text-lg md:text-xl leading-relaxed mb-12 md:mb-16 max-w-4xl mx-auto text-shadow"
+          >
             {t("mission.description")}
-          </p>
+          </motion.p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-            <div className="text-center h-full flex flex-col items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="text-center h-full flex flex-col items-center"
+            >
               <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 border border-white/30">
                 <Eye className="w-8 h-8 md:w-10 md:h-10 text-white" />
               </div>
@@ -229,8 +281,14 @@ export default function HomePage() {
               <p className="text-white/90 leading-relaxed flex-grow text-shadow text-sm md:text-base">
                 {t("mission.research.desc")}
               </p>
-            </div>
-            <div className="text-center h-full flex flex-col items-center">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+              className="text-center h-full flex flex-col items-center"
+            >
               <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 border border-white/30">
                 <Award className="w-8 h-8 md:w-10 md:h-10 text-white" />
               </div>
@@ -240,8 +298,14 @@ export default function HomePage() {
               <p className="text-white/90 leading-relaxed flex-grow text-shadow text-sm md:text-base">
                 {t("mission.protection.desc")}
               </p>
-            </div>
-            <div className="text-center h-full flex flex-col items-center">
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.4, ease: "easeOut" }}
+              className="text-center h-full flex flex-col items-center"
+            >
               <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 border border-white/30">
                 <BarChart3 className="w-8 h-8 md:w-10 md:h-10 text-white" />
               </div>
@@ -251,9 +315,9 @@ export default function HomePage() {
               <p className="text-white/90 leading-relaxed flex-grow text-shadow text-sm md:text-base">
                 {t("mission.education.desc")}
               </p>
-            </div>
+            </motion.div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
       {/* Species Teaser Section */}
@@ -262,15 +326,26 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-6xl font-serif font-bold text-forest mb-6">{t("species.title")}</h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">{t("species.subtitle")}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 }
+              }
+            }}
+            className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+          >
             {[
               {
                 name: t("species.bear"),
@@ -299,10 +374,14 @@ export default function HomePage() {
             ].map((species, index) => (
               <motion.div
                 key={species.slug}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.2 }}
-                viewport={{ once: true }}
+                variants={{
+                  hidden: { opacity: 0, y: 40 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: { duration: 0.5, ease: "easeOut" }
+                  }
+                }}
                 className="h-full"
               >
                 <Link href={`/selmy/${species.slug}`} className="block group h-full" onClick={scrollToTop}>
@@ -347,7 +426,7 @@ export default function HomePage() {
                 </Link>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -357,15 +436,26 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-6xl font-serif font-bold text-forest mb-6">{t("gallery.title")}</h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto leading-relaxed">{t("gallery.subtitle")}</p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.1 }
+              }
+            }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
             {[
               {
                 image: "/images/medved1.jpeg",
@@ -400,10 +490,15 @@ export default function HomePage() {
             ].map((photo, index) => (
               <motion.div
                 key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: index * 0.1 }}
-                viewport={{ once: true }}
+                variants={{
+                  hidden: { opacity: 0, y: 30, scale: 0.95 },
+                  visible: {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    transition: { duration: 0.5, ease: "easeOut" }
+                  }
+                }}
                 className="card group cursor-pointer overflow-hidden h-full flex flex-col"
               >
                 <div className="relative h-64 mb-6 overflow-hidden rounded-xl flex-shrink-0">
@@ -423,13 +518,19 @@ export default function HomePage() {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
 
-          <div className="text-center mt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-center mt-16"
+          >
             <Link href="/galeria" className="btn-primary text-lg px-8 py-4" onClick={scrollToTop}>
               {t("gallery.title")}
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -439,8 +540,8 @@ export default function HomePage() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            viewport={{ once: true, margin: "-100px" }}
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-6xl font-serif font-bold text-forest mb-6">{t("blog.title")}</h2>
@@ -475,17 +576,32 @@ export default function HomePage() {
               <p className="text-gray-600">{t("blog.no.posts.desc")}</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.15 }
+                }
+              }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            >
               {blogPosts.map((post, index) => {
                 const title = post.title
 
                 return (
                   <motion.div
                     key={post.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: index * 0.2 }}
-                    viewport={{ once: true }}
+                    variants={{
+                      hidden: { opacity: 0, y: 30 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.5, ease: "easeOut" }
+                      }
+                    }}
                     className="h-full"
                   >
                     <Card className="h-full hover:shadow-lg transition-shadow">
@@ -516,17 +632,23 @@ export default function HomePage() {
                   </motion.div>
                 )
               })}
-            </div>
+            </motion.div>
           )}
 
-          <div className="text-center mt-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-50px" }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="text-center mt-16"
+          >
             <Link href="/blog" onClick={scrollToTop}>
               <Button size="lg" className="bg-forest hover:bg-forest-dark text-white">
                 {t("blog.view.all")}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
