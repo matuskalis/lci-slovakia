@@ -117,7 +117,9 @@ export function LeafletMap() {
         if (ohrozenie.includes("vizuálny kontakt")) {
           pozorovanie = 1
           category = "Pozorovanie"
-        } else if (ohrozenie.includes("pobytové znaky")) {
+        } else if (ohrozenie.includes("pobytové znaky") || ohrozenie.includes("vzorka")) {
+          // Lesy SR reports collected scat and hair samples as separate categories;
+          // both are presence signs
           pobytove_znaky = 1
           category = "Pobytové znaky"
         } else if (ohrozenie.includes("útok")) {
