@@ -171,7 +171,7 @@ export function LeafletMap() {
     const fetchData = async () => {
       try {
         // Fetch CSV data
-        const csvResponse = await fetch("/images/medvede-export.csv")
+        const csvResponse = await fetch("/api/medvede")
         const csvText = await csvResponse.text()
         const sightings = parseCSV(csvText)
         setAllSightings(sightings)

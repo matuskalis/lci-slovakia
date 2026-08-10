@@ -320,6 +320,28 @@ const translations = {
     "species.conservation.status.title": "Ochranný status",
     "species.threats.title": "Hlavné hrozby",
     "species.conservation.measures.title": "Ochranné opatrenia",
+
+    // Data request
+    "data.request.title": "Žiadosť o dáta",
+    "data.request.subtitle":
+      "Mapa zobrazuje výskyt medveďa hnedého v zjednodušenej podobe. Presné súradnice poskytujeme na požiadanie.",
+    "data.request.terms.title": "Podmienky poskytnutia",
+    "data.request.terms.source": "Dáta poskytli LESY Slovenskej republiky, š.p.",
+    "data.request.terms.attribution": "Pri každom použití uvediete Lesy SR ako zdroj dát.",
+    "data.request.terms.noredistribute":
+      "Dáta nebudete ďalej šíriť ani zverejňovať v pôvodnej podobe bez súhlasu Lesov SR.",
+    "data.request.terms.privacy":
+      "Vaše meno, e-mail a účel použitia uchovávame ako záznam o tom, komu boli dáta poskytnuté.",
+    "data.request.name": "Meno a priezvisko",
+    "data.request.email": "E-mail",
+    "data.request.organization": "Organizácia (nepovinné)",
+    "data.request.purpose": "Na aký účel dáta potrebujete?",
+    "data.request.consent": "Súhlasím s uvedenými podmienkami a so spracovaním uvedených údajov.",
+    "data.request.submit": "Odoslať žiadosť",
+    "data.request.sending": "Odosielam...",
+    "data.request.success": "Odkaz na stiahnutie sme poslali na váš e-mail. Platí 7 dní.",
+    "data.request.success.manual": "Žiadosť sme zaevidovali. Ozveme sa vám e-mailom.",
+    "data.request.error": "Žiadosť sa nepodarilo odoslať. Skúste to znova.",
   },
   en: {
     // Navigation
@@ -635,6 +657,28 @@ const translations = {
     "species.conservation.status.title": "Conservation Status",
     "species.threats.title": "Main Threats",
     "species.conservation.measures.title": "Conservation Measures",
+
+    // Data request
+    "data.request.title": "Data Request",
+    "data.request.subtitle":
+      "The map shows brown bear occurrences in simplified form. Exact coordinates are available on request.",
+    "data.request.terms.title": "Terms of use",
+    "data.request.terms.source": "The data was provided by LESY Slovenskej republiky, š.p.",
+    "data.request.terms.attribution": "You will credit Lesy SR as the source in any use of the data.",
+    "data.request.terms.noredistribute":
+      "You will not redistribute or republish the data in its original form without the consent of Lesy SR.",
+    "data.request.terms.privacy":
+      "We keep your name, e-mail and stated purpose as a record of who the data was provided to.",
+    "data.request.name": "Full name",
+    "data.request.email": "E-mail",
+    "data.request.organization": "Organization (optional)",
+    "data.request.purpose": "What do you need the data for?",
+    "data.request.consent": "I agree to the terms above and to the processing of the details I provided.",
+    "data.request.submit": "Send request",
+    "data.request.sending": "Sending...",
+    "data.request.success": "We sent a download link to your e-mail. It is valid for 7 days.",
+    "data.request.success.manual": "Your request has been recorded. We will get back to you by e-mail.",
+    "data.request.error": "The request could not be sent. Please try again.",
   },
 }
 
