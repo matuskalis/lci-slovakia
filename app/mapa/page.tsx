@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import Link from "next/link"
 import { useLanguage } from "@/contexts/LanguageContext"
 
 // Dynamically import LeafletMap with no SSR to prevent window errors
@@ -69,6 +70,16 @@ export default function MapaPage() {
             </div>
             <p className="text-xs lg:text-base text-gray-600">{t("map.conflicts.desc")}</p>
           </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-lg p-4 lg:p-6 mt-3 lg:mt-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+          <p className="text-xs lg:text-base text-gray-600">{t("map.data.note")}</p>
+          <Link
+            href="/stiahnut-data"
+            className="shrink-0 bg-[#44623c] text-white rounded-md px-4 py-2 text-sm font-semibold text-center hover:bg-[#3a5333] transition-colors"
+          >
+            {t("map.data.cta")}
+          </Link>
         </div>
       </div>
     </div>

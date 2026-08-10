@@ -322,6 +322,9 @@ const translations = {
     "species.conservation.measures.title": "Ochranné opatrenia",
 
     // Data request
+    "map.data.note":
+      "Mapa zobrazuje polohy zjednodušene. Presné súradnice poskytujeme výskumníkom a organizáciám na požiadanie.",
+    "map.data.cta": "Žiadosť o dáta",
     "data.request.title": "Žiadosť o dáta",
     "data.request.subtitle":
       "Mapa zobrazuje výskyt medveďa hnedého v zjednodušenej podobe. Presné súradnice poskytujeme na požiadanie.",
@@ -659,6 +662,9 @@ const translations = {
     "species.conservation.measures.title": "Conservation Measures",
 
     // Data request
+    "map.data.note":
+      "The map shows locations in simplified form. Exact coordinates are available to researchers and organizations on request.",
+    "map.data.cta": "Request data",
     "data.request.title": "Data Request",
     "data.request.subtitle":
       "The map shows brown bear occurrences in simplified form. Exact coordinates are available on request.",

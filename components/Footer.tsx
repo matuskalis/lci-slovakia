@@ -58,6 +58,14 @@ export function Footer() {
                   {t("nav.gallery")}
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/stiahnut-data"
+                  className="text-white/80 hover:text-white transition-colors duration-300 text-sm"
+                >
+                  {t("map.data.cta")}
+                </Link>
+              </li>
             </ul>
           </div>
 
