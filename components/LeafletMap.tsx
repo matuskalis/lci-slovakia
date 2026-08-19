@@ -38,6 +38,8 @@ interface FilterState {
   aktuality: boolean
 }
 
+const ALL_YEARS = "all"
+
 export function LeafletMap() {
   const { language } = useLanguage()
   const mapRef = useRef<HTMLDivElement>(null)
@@ -475,12 +477,14 @@ export function LeafletMap() {
   useEffect(() => {
     const filtered = allSightings.filter((sighting) => {
       // Year filter
-      try {
-        const sightingYear = new Date(sighting.date).getFullYear().toString()
-        if (sightingYear !== selectedYear) return false
-      } catch {
-        // If date parsing fails, exclude from current year filter
-        if (selectedYear !== new Date().getFullYear().toString()) return false
+      if (selectedYear !== ALL_YEARS) {
+        try {
+          const sightingYear = new Date(sighting.date).getFullYear().toString()
+          if (sightingYear !== selectedYear) return false
+        } catch {
+          // If date parsing fails, exclude from current year filter
+          if (selectedYear !== new Date().getFullYear().toString()) return false
+        }
       }
 
       // Category filters
@@ -493,7 +497,7 @@ export function LeafletMap() {
 
     // Filter bear activities by year
     const filteredActs = bearActivities.filter((activity) => {
-      return activity.year.toString() === selectedYear
+      return selectedYear === ALL_YEARS || activity.year.toString() === selectedYear
     })
     setFilteredActivities(filteredActs)
   }, [allSightings, bearActivities, filters, selectedYear])
@@ -725,6 +729,7 @@ export function LeafletMap() {
                 <SelectValue placeholder={language === "sk" ? "Vyberte rok" : "Select year"} />
               </SelectTrigger>
               <SelectContent>
+                <SelectItem value={ALL_YEARS}>{language === "sk" ? "Všetky roky" : "All years"}</SelectItem>
                 {availableYears
                   .filter((year) => year !== "202")
                   .map((year) => (
@@ -735,9 +740,13 @@ export function LeafletMap() {
               </SelectContent>
             </Select>
             <p className="text-xs text-gray-500">
-              {language === "sk"
-                ? `Zobrazujú sa údaje za rok ${selectedYear}`
-                : `Showing data for year ${selectedYear}`}
+              {selectedYear === ALL_YEARS
+                ? language === "sk"
+                  ? "Zobrazujú sa údaje za všetky roky"
+                  : "Showing data for all years"
+                : language === "sk"
+                  ? `Zobrazujú sa údaje za rok ${selectedYear}`
+                  : `Showing data for year ${selectedYear}`}
             </p>
           </div>
 
