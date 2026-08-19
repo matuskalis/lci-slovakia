@@ -33,6 +33,10 @@ z toho 160 za rok 2025. Sú to markery navyše popri dátach z Lesov SR:
 
 ## 3. /o-nas: prepísať históriu združenia
 
+**19. 8. 2026: položka `2021 Prvé projekty` je odstránená** z `/o-nas`
+aj z `/o-druzstve`, kým LCI nedodá, čo sa v tom roku naozaj stalo.
+
+
 Časová os na `/o-nas` je dnes generický text bez doloženia
 (`contexts/LanguageContext.tsx:147-158`, SK aj EN verzia):
 
@@ -45,6 +49,14 @@ z toho 160 za rok 2025. Sú to markery navyše popri dátach z Lesov SR:
       s dátumami a názvami projektov
 - [ ] Prepísať aj úvodný text o združení podľa toho, čo dodajú
 - [ ] Kým podklady neprídu, nenahrádzať to inou pravdepodobne znejúcou výplňou
+- [ ] `/o-druzstve` publikuje 4 vymyslených ľudí s menami, titulmi a životopismi
+      (`app/o-druzstve/page.tsx:8-30`: Dr. Mária Nováková, Ing. Peter Horváth,
+      Mgr. Jana Svobodová, Dr. Tomáš Krejčí). Stránka je živá, hoci nie je
+      v navigácii. Vyhodiť alebo nahradiť skutočnými menami
+- [ ] `/spoluprace` uvádza pri Lesoch SR a Zväze včelárov konkrétne spoločné
+      projekty, ktoré nemáme doložené (`app/spoluprace/page.tsx:182-190, 224-232`)
+- [ ] Kontaktný e-mail je dočasne `civanpavel@gmail.com` (pätička aj
+      `/spoluprace`). Vymeniť za adresu na doméne LCI, keď bude
 
 ## 4. Dozvuky po otvorení dát (hotové 19. 8. 2026, zostáva dočistiť)
 

@@ -325,7 +325,7 @@ export default function CooperationPage() {
                 <p className="font-semibold" style={{ color: "#5f523b" }}>
                   Email
                 </p>
-                <p className="text-gray-600">info@lci-sk.org</p>
+                <p className="text-gray-600">civanpavel@gmail.com</p>
               </div>
             </div>
           </motion.div>

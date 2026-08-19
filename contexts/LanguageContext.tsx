@@ -147,9 +147,6 @@ const translations = {
     "about.history.2020.title": "Založenie združenia",
     "about.history.2020.desc":
       "Skupina nadšencov a ochranárov sa rozhodla založiť združenie zamerané na systematický výskum a ochranu veľkých šeliem na Slovensku.",
-    "about.history.2021.title": "Prvé projekty",
-    "about.history.2021.desc":
-      "Spustili sme prvé výskumné projekty zamerané na monitoring populácií a mapovanie výskytu veľkých šeliem v slovenských lesoch.",
     "about.history.2023.title": "Medzinárodná spolupráca",
     "about.history.2023.desc":
       "Nadviazali sme spoluprácu s výskumnými inštitúciami v susedných krajinách a začali koordinované projekty ochrany.",
@@ -474,9 +471,6 @@ const translations = {
     "about.history.2020.title": "Association Founded",
     "about.history.2020.desc":
       "A group of enthusiasts and conservationists decided to establish an association focused on systematic research and protection of large carnivores in Slovakia.",
-    "about.history.2021.title": "First Projects",
-    "about.history.2021.desc":
-      "We launched the first research projects focused on population monitoring and mapping the occurrence of large carnivores in Slovak forests.",
     "about.history.2023.title": "International Cooperation",
     "about.history.2023.desc":
       "We established cooperation with research institutions in neighboring countries and began coordinated protection projects.",

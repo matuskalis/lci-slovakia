@@ -174,19 +174,6 @@ export default function AboutPage() {
 
               <div className="flex items-start">
                 <div className="flex-shrink-0 w-16 h-16 bg-forest text-white rounded-full flex items-center justify-center font-bold text-lg mr-6">
-                  2019
-                </div>
-                <div>
-                  <h3 className="text-xl font-serif font-bold text-forest mb-2">Prvé projekty</h3>
-                  <p className="text-gray-700">
-                    Spustili sme prvé výskumné projekty zamerané na monitoring populácií a mapovanie výskytu veľkých
-                    šeliem v slovenských lesoch.
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex items-start">
-                <div className="flex-shrink-0 w-16 h-16 bg-forest text-white rounded-full flex items-center justify-center font-bold text-lg mr-6">
                   2021
                 </div>
                 <div>
