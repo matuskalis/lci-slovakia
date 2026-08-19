@@ -58,12 +58,8 @@ aj z `/o-druzstve`, kým LCI nedodá, čo sa v tom roku naozaj stalo.
 - [ ] Kontaktný e-mail je dočasne `civanpavel@gmail.com` (pätička aj
       `/spoluprace`). Vymeniť za adresu na doméne LCI, keď bude
 
-## 4. Dozvuky po otvorení dát (hotové 19. 8. 2026, zostáva dočistiť)
+## 4. Dozvuky po otvorení dát
 
-- [ ] Zrušiť nepoužívané env premenné vo Verceli: `RESEND_API_KEY`,
-      `DATA_REQUEST_FROM`, `DATA_REQUEST_SECRET`
-- [ ] Rozhodnúť, čo s tabuľkou `data_requests` v Supabase. Zostala aj so
-      záznamami o doterajších žiadateľoch; kód ju už nepoužíva
 - [ ] Overiť s Lesmi SR licenciu na ďalšie šírenie datasetu. Web pred zmenou
       tvrdil, že dáta sa nesmú zverejňovať bez ich súhlasu, a bod 6
       v `CONTENT_GAPS.md` je stále otvorený
