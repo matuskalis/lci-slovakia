@@ -369,10 +369,6 @@ export function LeafletMap() {
       })
       markersRef.current = []
 
-      // Get current zoom level
-      const currentZoom = mapInstanceRef.current.getZoom()
-      const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1024
-
       // Add new markers
       filteredSightings.forEach((sighting) => {
         let color = "#22c55e" // Default green for observations
@@ -386,61 +382,16 @@ export function LeafletMap() {
           categoryText = "Pobytové znaky"
         }
 
-        let marker
-
-        // Use different marker styles based on zoom level
-        if (currentZoom < 11) {
-          // Use pin-style markers similar to sprejnamedveda.sk
-          const pinIcon = L.divIcon({
-            className: "custom-pin-marker",
-            html: `<div style="
-              position: relative;
-              width: 16px;
-              height: 22px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            ">
-              <div style="
-                width: 12px;
-                height: 12px;
-                background-color: ${color};
-                border: 1px solid ${color === "#22c55e" ? "#16a34a" : color === "#f59e0b" ? "#d97706" : "#dc2626"};
-                border-radius: 50% 50% 50% 0;
-                transform: rotate(-45deg);
-                position: absolute;
-                top: 1px;
-                left: 2px;
-              "></div>
-              <div style="
-                width: 5px;
-                height: 5px;
-                background-color: ${color};
-                border: 1px solid ${color === "#22c55e" ? "#16a34a" : color === "#f59e0b" ? "#d97706" : "#dc2626"};
-                border-radius: 50%;
-                position: absolute;
-                top: 5px;
-                left: 5.5px;
-                z-index: 1;
-              "></div>
-            </div>`,
-            iconSize: [16, 22],
-            iconAnchor: [8, 22],
-          })
-
-          marker = L.marker([sighting.latitude, sighting.longitude], {
-            icon: pinIcon,
-          })
-        } else {
-          // Use circles for zoom levels 11 and above (larger and more noticeable)
-          marker = L.circle([sighting.latitude, sighting.longitude], {
-            color: color,
-            fillColor: color,
-            fillOpacity: 0.7,
-            weight: 4,
-            radius: screenWidth < 768 ? 400 : 300,
-          })
-        }
+        // One dot per record, sized in pixels. A ground radius would draw a
+        // several-hundred-metre circle around every bear, which reads as an
+        // area the animal covered rather than a single logged position.
+        const marker = L.circleMarker([sighting.latitude, sighting.longitude], {
+          color: color,
+          fillColor: color,
+          fillOpacity: 0.85,
+          weight: 1,
+          radius: 5,
+        })
 
         // The dataset is public at full precision, so the popup shows the exact
         // date of the record rather than only its month
@@ -518,22 +469,6 @@ export function LeafletMap() {
     }
 
     updateMarkers()
-
-    // Add zoom event listener to update markers when zoom changes
-    const handleZoomEnd = () => {
-      updateMarkers()
-    }
-
-    if (mapInstanceRef.current) {
-      mapInstanceRef.current.on("zoomend", handleZoomEnd)
-    }
-
-    // Cleanup zoom event listener
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.off("zoomend", handleZoomEnd)
-      }
-    }
   }, [filteredSightings, isLoading, language, isMounted])
 
   // Filter sightings based on active filters
@@ -579,9 +514,6 @@ export function LeafletMap() {
     // Only add markers if filter is enabled
     if (!filters.aktuality) return
 
-    const currentZoom = mapInstanceRef.current.getZoom()
-    const screenWidth = typeof window !== "undefined" ? window.innerWidth : 1024
-
     const updateAktualityMarkers = () => {
       // Clear existing
       aktualityMarkersRef.current.forEach((marker) => {
@@ -591,64 +523,19 @@ export function LeafletMap() {
 
       if (!filters.aktuality) return
 
-      const zoom = mapInstanceRef.current.getZoom()
 
       filteredActivities.forEach((activity) => {
         // Purple color for aktuality, red border if it's an attack
         const color = activity.utok ? "#dc2626" : "#8b5cf6" // Red for attacks, purple for observations
         const borderColor = activity.utok ? "#991b1b" : "#7c3aed"
 
-        let marker
-
-        if (zoom < 11) {
-          const pinIcon = L.divIcon({
-            className: "custom-pin-marker aktuality",
-            html: `<div style="
-              position: relative;
-              width: 16px;
-              height: 22px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-            ">
-              <div style="
-                width: 12px;
-                height: 12px;
-                background-color: ${color};
-                border: 2px solid ${borderColor};
-                border-radius: 50% 50% 50% 0;
-                transform: rotate(-45deg);
-                position: absolute;
-                top: 1px;
-                left: 2px;
-              "></div>
-              <div style="
-                width: 5px;
-                height: 5px;
-                background-color: white;
-                border-radius: 50%;
-                position: absolute;
-                top: 5px;
-                left: 5.5px;
-                z-index: 1;
-              "></div>
-            </div>`,
-            iconSize: [16, 22],
-            iconAnchor: [8, 22],
-          })
-
-          marker = L.marker([activity.latitude, activity.longitude], {
-            icon: pinIcon,
-          })
-        } else {
-          marker = L.circle([activity.latitude, activity.longitude], {
-            color: borderColor,
-            fillColor: color,
-            fillOpacity: 0.8,
-            weight: 3,
-            radius: screenWidth < 768 ? 400 : 300,
-          })
-        }
+        const marker = L.circleMarker([activity.latitude, activity.longitude], {
+          color: borderColor,
+          fillColor: color,
+          fillOpacity: 0.85,
+          weight: 1,
+          radius: 5,
+        })
 
         // Format date
         const formattedDate = activity.date
@@ -726,19 +613,6 @@ export function LeafletMap() {
     }
 
     updateAktualityMarkers()
-
-    // Update on zoom
-    const handleZoomEnd = () => {
-      updateAktualityMarkers()
-    }
-
-    mapInstanceRef.current.on("zoomend", handleZoomEnd)
-
-    return () => {
-      if (mapInstanceRef.current) {
-        mapInstanceRef.current.off("zoomend", handleZoomEnd)
-      }
-    }
   }, [filters.aktuality, filteredActivities, isLoading, language, isMounted])
 
   // Handle filter changes
@@ -926,7 +800,7 @@ export function LeafletMap() {
                 <div className="flex items-center gap-2">
                   <div className="w-3 h-3 lg:w-4 lg:h-4 rounded-full bg-purple-500"></div>
                   <label htmlFor="aktuality" className="text-xs lg:text-sm font-medium">
-                    {language === "sk" ? "Aktuality (sprejnamedveda.sk)" : "News (sprejnamedveda.sk)"}
+                    {language === "sk" ? "Verejnosť" : "Public reports"}
                   </label>
                 </div>
               </div>
@@ -958,7 +832,7 @@ export function LeafletMap() {
               {filters.aktuality && filteredActivities.length > 0 && (
                 <div className="flex justify-between">
                   <span className="text-xs lg:text-sm text-gray-600">
-                    {language === "sk" ? "Aktuality:" : "News:"}
+                    {language === "sk" ? "Verejnosť:" : "Public reports:"}
                   </span>
                   <span className="font-semibold text-xs lg:text-sm text-purple-600">
                     {filteredActivities.length}
