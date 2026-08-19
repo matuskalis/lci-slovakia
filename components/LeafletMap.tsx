@@ -442,14 +442,17 @@ export function LeafletMap() {
           })
         }
 
-        // Format date to show only month and year
+        // The dataset is public at full precision, so the popup shows the exact
+        // date of the record rather than only its month
         let formattedDate = ""
         try {
           const date = new Date(sighting.date)
           if (!isNaN(date.getTime())) {
-            const year = date.getFullYear()
-            const month = date.toLocaleDateString(language === "sk" ? "sk-SK" : "en-US", { month: "long" })
-            formattedDate = `${month} ${year}`
+            formattedDate = date.toLocaleDateString(language === "sk" ? "sk-SK" : "en-US", {
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })
           } else {
             formattedDate = sighting.date
           }
