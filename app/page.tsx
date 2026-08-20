@@ -3,7 +3,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Eye, BarChart3, Award, Calendar } from "lucide-react"
+import { ArrowRight, Eye, BarChart3, Award, Calendar, ShieldCheck } from "lucide-react"
 import { useLanguage } from "@/contexts/LanguageContext"
 import { useEffect, useState } from "react"
 import { createClient } from "@/lib/supabase/client"
@@ -264,7 +264,7 @@ export default function HomePage() {
           >
             {t("mission.description")}
           </motion.p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -314,6 +314,23 @@ export default function HomePage() {
               </h3>
               <p className="text-white/90 leading-relaxed flex-grow text-shadow text-sm md:text-base">
                 {t("mission.education.desc")}
+              </p>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
+              className="text-center h-full flex flex-col items-center"
+            >
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-4 md:mb-6 border border-white/30">
+                <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-white" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-serif font-bold mb-3 md:mb-4 text-shadow">
+                {t("mission.prevention")}
+              </h3>
+              <p className="text-white/90 leading-relaxed flex-grow text-shadow text-sm md:text-base">
+                {t("mission.prevention.desc")}
               </p>
             </motion.div>
           </div>

@@ -49,8 +49,9 @@ const translations = {
     "species.lynx.status": "Kriticky ohrozený",
 
     // Homepage
-    "hero.title": "Ochrana veľkých šeliem na Slovensku",
-    "hero.subtitle": "Venujeme sa výskumu a ochrane medveďa, vlka a rysa v ich prirodzenom prostredí",
+    "hero.title": "Monitoring a ochrana veľkých šeliem na Slovensku",
+    "hero.subtitle":
+      "Venujeme sa výskumu, monitoringu a ochrane medveďa, vlka a rysa v ich prirodzenom prostredí.",
     "hero.cta1": "Spoznaj naše šelmy",
     "hero.cta2": "O našej práci",
 
@@ -62,13 +63,17 @@ const translations = {
     // Mission
     "mission.title": "Naša misia",
     "mission.description":
-      "LCI-SK.eu je združenie odborníkov a nadšencov, ktorí sa venujú ochrane a výskumu veľkých šeliem na Slovensku. Naším cieľom je zabezpečiť dlhodobé prežitie medveďa hnedého, vlka dravého a rysa ostrovida v slovenských lesoch.",
+      "LCI-SK.eu je združenie odborníkov a nadšencov, ktorí sa venujú výskumu, monitoringu a ochrane veľkých šeliem na Slovensku. Našim cieľom je zabezpečiť dlhodobé prežitie medveďa hnedého, vlka dravého a rysa ostrovida v slovenských lesoch, s kladením dôrazu na možnosť harmonického spolužitia človeka a veľkých šeliem v slovenskej prírode. Spájame ochranárov, poľnohospodárov, lesníkov, chovateľov a samosprávy pri hľadaní spoločných riešení.",
     "mission.research": "Výskum",
     "mission.research.desc": "Sledujeme populácie a správanie veľkých šeliem pomocou najmodernejších technológií",
     "mission.protection": "Ochrana",
     "mission.protection.desc": "Chránime ich prirodzené prostredie a migračné koridory pre budúce generácie",
-    "mission.education": "Osveta",
-    "mission.education.desc": "Vzdelávame verejnosť o význame týchto druhov pre ekosystém",
+    "mission.education": "Osveta a vzdelávanie",
+    "mission.education.desc":
+      "Šírime overené fakty, búrame mýty a učíme verejnosť, ako sa v prírode správať bezpečne.",
+    "mission.prevention": "Praktická prevencia",
+    "mission.prevention.desc":
+      "Pomáhame chovateľom a obciam zavádzať účinné opatrenia na ochranu ľudí, stád a včelstiev.",
 
     // Species section
     "species.title": "Naše šelmy",
@@ -136,28 +141,10 @@ const translations = {
     // About
     "about.title": "O združení LCI-SK",
     "about.subtitle": "Sme tím odborníkov a nadšencov venujúcich sa ochrane veľkých šeliem",
-    "about.mission.title": "Naša misia",
+    "about.mission.title": "Naše poslanie a misia",
     "about.mission.description":
-      "Združenie LCI-SK.eu vzniklo z potreby systematickej ochrany a výskumu veľkých šeliem na Slovensku. Naším hlavným cieľom je zabezpečiť dlhodobé prežitie medveďa hnedého, vlka dravého a rysa ostrovida v ich prirodzenom prostredí prostredníctvom vedeckého výskumu, ochrany prostredia a vzdelávania verejnosti.",
-    "about.team": "Náš tím",
-    "about.team.description":
-      "Sme skupina odborníkov z rôznych oblastí, ktorých spája láska k prírode a záujem o ochranu veľkých šeliem.",
-    "about.history": "História združenia",
+      "Naším poslaním je chrániť slovenské šelmy na základe dát a zároveň bezpečne chrániť ľudí a ich majetok. Spájame vedecký výskum a monitoring s modernou prevenciou škôd a osvetou, aby sme dokázali, že človek, vlk, medveď a rys môžu žiť v jednej krajine bez konfliktov.",
     "about.goals": "Naše ciele",
-    "about.history.2020.title": "Založenie združenia",
-    "about.history.2020.desc":
-      "Skupina nadšencov a ochranárov sa rozhodla založiť združenie zamerané na systematický výskum a ochranu veľkých šeliem na Slovensku.",
-    "about.history.2023.title": "Medzinárodná spolupráca",
-    "about.history.2023.desc":
-      "Nadviazali sme spoluprácu s výskumnými inštitúciami v susedných krajinách a začali koordinované projekty ochrany.",
-    "about.history.2025.title": "Súčasnosť",
-    "about.history.2025.desc":
-      "Dnes sme uznávanou organizáciou v oblasti ochrany veľkých šeliem s aktívnymi projektmi po celom Slovensku.",
-    "about.goals.research.desc":
-      "Pokračovať vo vedeckom výskume správania, ekológie a genetiky veľkých šeliem na Slovensku.",
-    "about.goals.protection.desc":
-      "Chrániť a obnovovať prirodzené prostredie a migračné koridory potrebné pre prežitie šeliem.",
-    "about.goals.education.desc": "Vzdelávať verejnosť o význame veľkých šeliem pre ekosystém a potrebu ich ochrany.",
 
     // Cooperation
     "cooperation.title": "Spolupráce",
@@ -368,9 +355,9 @@ const translations = {
     "species.lynx.status": "Critically endangered",
 
     // Homepage
-    "hero.title": "Protection of Large Carnivores in Slovakia",
+    "hero.title": "Monitoring and Protection of Large Carnivores in Slovakia",
     "hero.subtitle":
-      "We are dedicated to research and protection of bears, wolves and lynx in their natural environment",
+      "We are dedicated to the research, monitoring and protection of bears, wolves and lynx in their natural environment.",
     "hero.cta1": "Meet Our Carnivores",
     "hero.cta2": "About Our Work",
 
@@ -382,13 +369,17 @@ const translations = {
     // Mission
     "mission.title": "Our Mission",
     "mission.description":
-      "LCI-SK.eu is an association of experts and enthusiasts dedicated to the protection and research of large carnivores in Slovakia. Our goal is to ensure the long-term survival of brown bears, gray wolves and Eurasian lynx in Slovak forests.",
+      "LCI-SK.eu is an association of experts and enthusiasts dedicated to the research, monitoring and protection of large carnivores in Slovakia. Our goal is to ensure the long-term survival of brown bears, gray wolves and Eurasian lynx in Slovak forests, with an emphasis on people and large carnivores living together in the Slovak countryside. We bring together conservationists, farmers, foresters, livestock keepers and municipalities to find shared solutions.",
     "mission.research": "Research",
     "mission.research.desc": "We monitor populations and behavior of large carnivores using the latest technologies",
     "mission.protection": "Protection",
     "mission.protection.desc": "We protect their natural environment and migration corridors for future generations",
-    "mission.education": "Education",
-    "mission.education.desc": "We educate the public about the importance of these species for the ecosystem",
+    "mission.education": "Education and outreach",
+    "mission.education.desc":
+      "We spread verified facts, break down myths and teach the public how to behave safely in the wild.",
+    "mission.prevention": "Practical prevention",
+    "mission.prevention.desc":
+      "We help livestock keepers and municipalities put in place measures that protect people, herds and beehives.",
 
     // Species section
     "species.title": "Our Carnivores",
@@ -460,29 +451,10 @@ const translations = {
     // About
     "about.title": "About LCI-SK Association",
     "about.subtitle": "We are a team of experts and enthusiasts dedicated to large carnivore protection",
-    "about.mission.title": "Our Mission",
+    "about.mission.title": "Our Purpose and Mission",
     "about.mission.description":
-      "The LCI-SK.eu association was founded from the need for systematic protection and research of large carnivores in Slovakia. Our main goal is to ensure the long-term survival of brown bears, gray wolves and Eurasian lynx in their natural environment through scientific research, environmental protection and public education.",
-    "about.team": "Our Team",
-    "about.team.description":
-      "We are a group of experts from various fields, united by our love for nature and interest in large carnivore protection.",
-    "about.history": "Association History",
+      "Our purpose is to protect Slovak carnivores on the basis of data while keeping people and their property safe. We combine scientific research and monitoring with modern damage prevention and outreach, to show that people, wolves, bears and lynx can share one landscape without conflict.",
     "about.goals": "Our Goals",
-    "about.history.2020.title": "Association Founded",
-    "about.history.2020.desc":
-      "A group of enthusiasts and conservationists decided to establish an association focused on systematic research and protection of large carnivores in Slovakia.",
-    "about.history.2023.title": "International Cooperation",
-    "about.history.2023.desc":
-      "We established cooperation with research institutions in neighboring countries and began coordinated protection projects.",
-    "about.history.2025.title": "Present",
-    "about.history.2025.desc":
-      "Today we are a recognized organization in the field of large carnivore protection with active projects throughout Slovakia.",
-    "about.goals.research.desc":
-      "Continue scientific research on behavior, ecology and genetics of large carnivores in Slovakia.",
-    "about.goals.protection.desc":
-      "Protect and restore natural environment and migration corridors needed for carnivore survival.",
-    "about.goals.education.desc":
-      "Educate the public about the importance of large carnivores for the ecosystem and the need for their protection.",
 
     // Cooperation
     "cooperation.title": "Cooperation",
